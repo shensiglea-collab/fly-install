@@ -2,65 +2,70 @@
 
 > 当 `clawhub install` 遭遇速率限制时的逃生通道 🚀
 
-## 问题场景
+## 功能特性
 
-- `npx clawhub install <skill>` 返回 `Rate limit exceeded`
-- `clawhub` CLI 无法访问或安装失败
-- 急需安装某个技能但官方渠道受阻
+- ✅ **GitHub 自动搜索克隆** - 优先从 GitHub 搜索并克隆技能仓库
+- ✅ **ClawHub zip 下载** - 从 clawhub.ai 直接下载 zip 包安装
+- ✅ **全自动安装流程** - 一键尝试多种安装方式
+- ✅ **手动安装指导** - 自动安装失败时提供详细手动步骤
 
-## 解决方案
+## 快速开始
 
-通过 clawhub.ai 网站直接下载技能 zip 包，手动安装到本地 skills 目录。
+```bash
+# 安装此技能
+cd ~/.openclaw/workspace/skills
+git clone https://github.com/shensiglea-collab/fly-install.git
+
+# 使用脚本安装其他技能
+~/.openclaw/workspace/skills/fly-install/fly-install.sh <skill-name>
+```
 
 ## 使用方法
 
-### 全自动脚本（推荐）
+### 全自动安装
 
 ```bash
-# 使用 fly-install 脚本一键安装
-~/.openclaw/workspace/skills/fly-install/fly-install.sh <skill-name>
-
-# 示例
 ~/.openclaw/workspace/skills/fly-install/fly-install.sh nano-pdf
-~/.openclaw/workspace/skills/fly-install/fly-install.sh skill-vetter
 ```
 
-### 手动流程
+脚本会按以下顺序尝试：
+1. 检查是否已安装
+2. **GitHub 搜索并克隆**
+3. ClawHub zip 下载
+4. 输出手动安装指导
 
-1. **搜索技能**: 访问 https://clawhub.ai/skills 搜索你要安装的技能
-2. **进入详情页**: 点击技能卡片，检查安全扫描状态
-3. **获取下载链接**: 找到 "Download zip" 按钮，复制链接
-4. **下载并安装**:
-   ```bash
-   cd ~/.openclaw/workspace/skills
-   wget -O <skill-name>.zip "<下载链接>"
-   unzip -q <skill-name>.zip -d <skill-name>
-   rm <skill-name>.zip
-   ```
-5. **验证安装**: `ls <skill-name>/SKILL.md`
-
-## 安装此技能
+### GitHub 直接克隆
 
 ```bash
-cd ~/.openclaw/workspace/skills
-git clone https://github.com/shensiglea-collab/fly-install.git
+# 搜索并克隆
+curl -s "https://api.github.com/search/repositories?q=nano-pdf+openclaw" | jq -r '.items[0].clone_url'
+git clone --depth 1 <clone_url> nano-pdf
 ```
+
+### ClawHub zip 手动安装
+
+1. 访问 https://clawhub.ai/skills
+2. 搜索技能，点击 "Download zip"
+3. 解压到 skills 目录
+
+## 安装方式对比
+
+| 方式 | 速度 | 安全性 | 适用场景 |
+|------|------|--------|----------|
+| GitHub 克隆 | 快 ⭐⭐⭐ | 中 | 开源技能 |
+| ClawHub zip | 快 ⭐⭐⭐ | 高 ⭐⭐⭐ | 官方技能 |
+| fly-install 脚本 | 全自动 ⭐⭐⭐ | 高 ⭐⭐⭐ | 快速安装 |
 
 ## 安全提示
 
-- ⚠️ **只从 clawhub.ai 官方站点下载**
-- ⚠️ **安装前检查 VirusTotal 扫描结果**
-- ⚠️ **审查 SKILL.md 内容后再使用**
-
-## 相关技能
-
-- `find-skills` - 搜索发现新技能
-- `security-check` - 扫描技能安全性
-
----
-
-*🦞 大龙虾的逃生通道，CLI 受阻时的救命稻草。*
+- ⚠️ 只从可信来源安装（clawhub.ai 或知名 GitHub 仓库）
+- ⚠️ 检查 VirusTotal 安全扫描结果
+- ⚠️ 审查 SKILL.md 内容后再使用
 
 ## GitHub 仓库
 
 https://github.com/shensiglea-collab/fly-install
+
+## License
+
+MIT
